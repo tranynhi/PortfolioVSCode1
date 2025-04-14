@@ -23,8 +23,8 @@
   }
   
   .logo {
-    font-size: 20px;
-    font-weight: bold;
+    width: 32px;
+    position: relative;
   }
   
   .menu {
