@@ -25,6 +25,8 @@ app.post("/api/notion", async (req, res) => {
         }
       }
     );
+    console.log("✅ Proxy nhận được request từ FE:", req.body);
+
     res.json(response.data);
   } catch (err) {
     console.error("Notion API error:", err.response?.data || err);
