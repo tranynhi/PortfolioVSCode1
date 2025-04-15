@@ -48,10 +48,13 @@
   <!-- Header -->
   <header role="banner">
     <nav aria-label="Main navigation">
+      <div class="logo">
+        <a href="/">Tran Y Nhi</a>
+      </div>
       <ul role="menubar">
-        <li><a href="#about">about</a></li>
-        <li><a href="#works">works</a></li>
-        <li><a href="#contact">contact</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
       <button class="sound-control">enjoy sound! ⏸</button>
     </nav>
@@ -154,197 +157,137 @@
       </div>
     </section>
 
-<!-- My work Section -->
-<section id="works" class="my-works" aria-labelledby="works-title">
-  <h2 id="works-title">Selected works</h2>
-  <div class="works-grid">
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="Garage Lab – AI">
+  <!-- My work Section -->
+  <section id="projects" class="my-works" aria-labelledby="projects-title">
+    <h2 id="projects-title">Selected works</h2>
+    <div id="projects-grid" class="projects-grid">
+      <!-- Projects will be loaded dynamically here -->
+      <div id="loading" style="text-align: center; padding: 2rem;">
+        Loading projects...
       </div>
-      <h3>Garage Lab – AI</h3>
-    </article>
+    </div>
+  </section>
 
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="ForAI – Pocket Contact">
-      </div>
-      <h3>ForAI – Pocket Contact</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="Ozone">
-      </div>
-      <h3>Ozone</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="Instant">
-      </div>
-      <h3>Instant</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="IONET">
-      </div>
-      <h3>IONET</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="B3 – Future of Onchain Gaming">
-      </div>
-      <h3>B3 – Future of Onchain Gaming</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="Rise Calendar">
-      </div>
-      <h3>Rise Calendar</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="2030 Forecast by Doconomy">
-      </div>
-      <h3>2030 Forecast by Doconomy</h3>
-    </article>
-
-    <article class="work-item">
-      <div class="image-wrapper">
-        <img src="assets/images/img3.jpeg" alt="2030 Forecast by Doconomy">
-      </div>
-      <h3>2030 Forecast by Doconomy</h3>
-    </article>
-  </div>
-  
-</section>
-
-    <!-- Slider Section -->
-    <section class="horizontal-scroll" id="scroll-section">
-      <div class="panel quote-panel">
-        <p class="intro-text">i love the quote</p>
-      
-        <div class="quote-grid">
-          <div class="line"><span>the bigger</span></div>
-          <div class="line"><span>the</span> <strong class="right-l">why,</strong></div>
-          <div class="line-right"><span>the easier</span></div>
-          <div class="bottom-line">
-            <span class="bold">the how</span>
-            <p class="note-text">This is how I design. With intention, clarity, and care</p>
-          </div>
-          
-        </div>
-      </div>
-      <!-- Flower -->
-      <div class="panel flower-panel">
-        <div class="flower-text-block">
-          <p>
-            Like flowers, good design doesn't shout. It speaks softly, grows with intention, and blooms with purpose.
-          </p>
-          <p>
-            I design experiences that adapt with users, respect their space, and make people feel seen.
-          </p>
+  <!-- Slider Section -->
+  <section class="horizontal-scroll" id="scroll-section">
+    <div class="panel quote-panel">
+      <p class="intro-text">i love the quote</p>
+    
+      <div class="quote-grid">
+        <div class="line"><span>the bigger</span></div>
+        <div class="line"><span>the</span> <strong class="right-l">why,</strong></div>
+        <div class="line-right"><span>the easier</span></div>
+        <div class="bottom-line">
+          <span class="bold">the how</span>
+          <p class="note-text">This is how I design. With intention, clarity, and care</p>
         </div>
         
-      <div class="flower-bottom-row">
-        <p> flower</p>
-        <div class="flower-image-wrapper"> <img src="assets/images/flower.png" alt="flower" class="flower-img" /> </div>
       </div>
-    
-      </div>
-
-      <!-- Nature -->
-      <div class="panel nature-panel">
-        <p class="nature-quote">
-          I love nature — not just its beauty, but its quiet intelligence. It adapts, flows, and finds balance — just like thoughtful design.
+    </div>
+    <!-- Flower -->
+    <div class="panel flower-panel">
+      <div class="flower-text-block">
+        <p>
+          Like flowers, good design doesn't shout. It speaks softly, grows with intention, and blooms with purpose.
         </p>
-      
-        <div class="nature-bottom">
-          <img src="assets/images/nature1.png" alt="nature" class="nature-img" />
-      
-          <div class="nature-center">
-            <h2>nature</h2>
-            <p class="nature-caption">
-              Nature reminds me to slow down,<br />
-              observe deeply, and design with care.
-            </p>
-          </div>
-      
-          <img src="assets/images/nature2.png" alt="sunset" class="nature-img" />
-        </div>
+        <p>
+          I design experiences that adapt with users, respect their space, and make people feel seen.
+        </p>
       </div>
       
-      <!-- Reading -->
-      <div class="panel reading-panel">
-        <div class="reading-top">
-          <div class="reading-text">
-            <p>
-              Reading helps me stay curious. It expands how I see the world — from design systems to human behavior.
-            </p>
-            <p>
-              Every page shapes how I think, feel, and create experiences that connect.
-            </p>
-          </div>
-          <img src="assets/images/readind.png" alt="books" class="reading-img" />
-        </div>
-      
-        <h2 class="reading-title">reading</h2>
-      </div>
-      
-       <!-- Tech -->
-       <div class="panel tech-panel">
-        <!-- Top content -->
-        <div class="tech-top">
-          <p class="tech-note">
-            I see technology as a tool — not the destination.
-          </p>
-          
-          <p class="tech-desc">
-            Like good design, it should feel invisible:<br>
-            quietly working in the background,<br>
-            empowering people,<br>
-            and making life just a little better.
-          </p>
-        </div>
+    <div class="flower-bottom-row">
+      <p> flower</p>
+      <div class="flower-image-wrapper"> <img src="assets/images/flower.png" alt="flower" class="flower-img" /> </div>
+    </div>
+  
+    </div>
 
-        <!-- Bottom content -->
-        <div class="tech-bottom">
-          <h2 class="tech-title">
-            tech<br>-nology
-          </h2>
-          <img 
-            src="assets/images/tech.png" 
-            alt="Technology illustration" 
-            class="tech-img"
-          >
-        </div>
-      </div>
-      
-    </section>
-
+    <!-- Nature -->
+    <div class="panel nature-panel">
+      <p class="nature-quote">
+        I love nature — not just its beauty, but its quiet intelligence. It adapts, flows, and finds balance — just like thoughtful design.
+      </p>
     
+      <div class="nature-bottom">
+        <img src="assets/images/nature1.png" alt="nature" class="nature-img" />
+    
+        <div class="nature-center">
+          <h2>nature</h2>
+          <p class="nature-caption">
+            Nature reminds me to slow down,<br />
+            observe deeply, and design with care.
+          </p>
+        </div>
+    
+        <img src="assets/images/nature2.png" alt="sunset" class="nature-img" />
+      </div>
+    </div>
+    
+    <!-- Reading -->
+    <div class="panel reading-panel">
+      <div class="reading-top">
+        <div class="reading-text">
+          <p>
+            Reading helps me stay curious. It expands how I see the world — from design systems to human behavior.
+          </p>
+          <p>
+            Every page shapes how I think, feel, and create experiences that connect.
+          </p>
+        </div>
+        <img src="assets/images/readind.png" alt="books" class="reading-img" />
+      </div>
+    
+      <h2 class="reading-title">reading</h2>
+    </div>
+    
+     <!-- Tech -->
+     <div class="panel tech-panel">
+      <!-- Top content -->
+      <div class="tech-top">
+        <p class="tech-note">
+          I see technology as a tool — not the destination.
+        </p>
+        
+        <p class="tech-desc">
+          Like good design, it should feel invisible:<br>
+          quietly working in the background,<br>
+          empowering people,<br>
+          and making life just a little better.
+        </p>
+      </div>
+
+      <!-- Bottom content -->
+      <div class="tech-bottom">
+        <h2 class="tech-title">
+          tech<br>-nology
+        </h2>
+        <img 
+          src="assets/images/tech.png" 
+          alt="Technology illustration" 
+          class="tech-img"
+        >
+      </div>
+    </div>
+    
+  </section>
+
   <!-- Footer Section -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-left">
       <img src="assets/images/flower.svg" alt="logo" class="footer-logo" />
       <h2 class="footer-title">
         crafting experiences  
- <br />
- with purpose and care <br />
+        <br />
+        with purpose and care <br />
         for the curious mind.
       </h2>
     </div>
 
     <div class="footer-right">
       <ul class="footer-links">
-        <li><a href="https://www.linkedin.com/in/nhi-tran-y/" target="_blank">LinkedIn</a></li>
-        <li><a href="https://www.behance.net/nhi-tran-y" target="_blank">Behance</a></li>
-        <li><a href="https://dribbble.com/nhi-tran-y" target="_blank">Dribbble</a></li>
+        <li><a href="https://www.linkedin.com/in/nhi-tran-y/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://www.behance.net/nhi-tran-y" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        <li><a href="https://dribbble.com/nhi-tran-y" target="_blank" rel="noopener noreferrer">Dribbble</a></li>
         <li><a href="mailto:tranynhi2015@gmail.com">Email me</a></li>
       </ul>
     </div>
@@ -380,5 +323,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
   <script src="js/script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/work-cards.js"></script>
+  <script type="module" src="js/home.js"></script>
 </body>
 </html>
