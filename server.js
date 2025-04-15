@@ -12,9 +12,10 @@ const PORT = process.env.PORT || 3000;
 
 // CORS and JSON middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://*.github.io'],
+  origin: ['http://localhost:5173', 'https://tranynhi.github.io', 'https://*.github.io', 'https://tranynhi.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Notion-Version'],
+  credentials: false
 }));
 app.use(express.json());
 

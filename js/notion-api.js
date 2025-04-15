@@ -1,13 +1,11 @@
-const NOTION_API_KEY = 'YOUR_NOTION_API_KEY';
+const API_ENDPOINT = 'https://portfolio-vs-code.vercel.app/api/notion';
 const DATABASE_ID = 'YOUR_DATABASE_ID';
 
 async function fetchNotionPosts() {
   try {
-    const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+    const response = await fetch(`${API_ENDPOINT}/databases/${DATABASE_ID}/query`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${NOTION_API_KEY}`,
-        'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -35,4 +33,4 @@ async function fetchNotionPosts() {
   }
 }
 
-export { fetchNotionPosts }; 
+export { fetchNotionPosts };
