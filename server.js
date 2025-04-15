@@ -12,10 +12,10 @@ const PORT = process.env.PORT || 3000;
 
 // CORS and JSON middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://tranynhi.github.io', 'https://*.github.io', 'https://tranynhi.vercel.app'],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Notion-Version'],
-  credentials: false
+  credentials: true
 }));
 app.use(express.json());
 
@@ -40,7 +40,7 @@ app.all('/api/notion/*', async (req, res) => {
     const response = await fetch(notionUrl, {
       method: req.method,
       headers: {
-        'Authorization': `Bearer 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`,
+        'Authorization': `Bearer secret_Ue8Ue6Ue8Ue6Ue8Ue6Ue8Ue6Ue8Ue6Ue8U`,
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
