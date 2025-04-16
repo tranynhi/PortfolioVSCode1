@@ -142,10 +142,10 @@ async function renderNotionContent(pageId) {
   try {
     console.log('Fetching page content for:', pageId);
     // Get the actual page ID from the project
-    const pageId = typeof pageId === 'object' ? pageId.id : pageId;
-    console.log('Fetching blocks for page:', pageId);
+    const actualPageId = typeof pageId === 'object' ? pageId.id : pageId;
+    console.log('Fetching blocks for page:', actualPageId);
     
-    const response = await fetch(`${API_ENDPOINT}/blocks/${pageId}/children`);
+    const response = await fetch(`${API_ENDPOINT}/blocks/${actualPageId}/children`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
