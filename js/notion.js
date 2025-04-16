@@ -139,11 +139,13 @@ async function getAllCategories() {
 // Function to render Notion content
 async function renderNotionContent(pageId) {
   try {
+    console.log('Fetching page content for:', pageId);
     const response = await fetch(`${API_ENDPOINT}/blocks/${pageId}/children`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+    console.log('Received page data:', data);
     
     // Convert blocks to HTML
     let html = '';
@@ -219,6 +221,7 @@ async function renderNotionContent(pageId) {
     return html;
   } catch (error) {
     console.error('Error rendering content:', error);
+    console.error('Error details:', error.message);
     throw error;
   }
 }
