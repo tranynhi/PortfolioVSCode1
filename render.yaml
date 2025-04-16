@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: tranynhi
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NOTION_API_KEY
+        value: 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
+      - key: NOTION_DATABASE_ID
+        value: 1d528e8b6f0c808ba49ce4ecceec8f07
+    routes:
+      - type: rewrite
+        source: /api/notion/*
+        destination: /api/notion/$1
+      - type: rewrite
+        source: /*
+        destination: /index.html
