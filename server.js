@@ -14,7 +14,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Notion-Version'],
+  credentials: true
+}));
 
 // Set strict MIME types
 const mimeTypes = {
@@ -27,27 +32,26 @@ const mimeTypes = {
   '.svg': 'image/svg+xml'
 };
 
-// Serve static files from dist
-app.use(express.static(path.join(__dirname, 'dist'), {
-  setHeaders: (res, filePath) => {
-    // Set nosniff header
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-
-    // Set correct MIME type
-    const ext = path.extname(filePath).toLowerCase();
-    const mimeType = mimeTypes[ext];
-    if (mimeType) {
-      res.setHeader('Content-Type', mimeType);
-    }
+// Middleware to set MIME types
+const setMimeType = (req, res, next) => {
+  const ext = path.extname(req.path).toLowerCase();
+  const mimeType = mimeTypes[ext];
+  if (mimeType) {
+    res.type(mimeType);
   }
-}));
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+};
+
+// Serve static files
+app.use('/css', setMimeType, express.static(path.join(__dirname, 'dist/css')));
+app.use('/js', setMimeType, express.static(path.join(__dirname, 'dist/js')));
+app.use('/assets', setMimeType, express.static(path.join(__dirname, 'dist/assets')));
 
 // Serve HTML pages
-app.use(express.static(path.join(__dirname, 'src/pages'), {
-  setHeaders: (res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-  }
+app.use('/', express.static(path.join(__dirname, 'src/pages'), {
+  index: ['index.html'],
+  extensions: ['html']
 }));
 
 // Health check endpoint
@@ -69,14 +73,23 @@ app.use('/components', express.static(path.join(__dirname, 'src/components')));
 // Notion API proxy
 app.all('/api/notion/*', async (req, res) => {
   try {
-    // Get Notion API path
+    // Get Notion API path and prepare URL
     const notionPath = req.params[0];
     const notionUrl = `https://api.notion.com/v1/${notionPath}`;
 
     // Log request
-    console.log(`[Notion API] ${req.method} ${notionUrl}`);
+    console.log(`[Notion API] Request:`, {
+      method: req.method,
+      url: notionUrl,
+      body: req.body
+    });
 
-    // Make request
+    // Check API key
+    if (!NOTION_API_KEY) {
+      throw new Error('Notion API key is missing');
+    }
+
+    // Make request to Notion
     const response = await fetch(notionUrl, {
       method: req.method,
       headers: {
@@ -84,52 +97,47 @@ app.all('/api/notion/*', async (req, res) => {
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
-      body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
+      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
     });
 
-    // Parse response
-    let data;
-    try {
-      data = await response.json();
-    } catch (e) {
-      data = await response.text();
-    }
+    // Get response data
+    const contentType = response.headers.get('content-type');
+    const data = contentType?.includes('application/json')
+      ? await response.json()
+      : await response.text();
 
     // Log response
     console.log(`[Notion API] Response:`, {
       status: response.status,
       ok: response.ok,
-      type: typeof data
+      contentType,
+      data: typeof data === 'string' ? data.substring(0, 100) : data
     });
 
-    // Handle error
+    // Handle error response
     if (!response.ok) {
-      throw new Error(JSON.stringify({
+      return res.status(response.status).json({
+        error: 'Notion API Error',
         status: response.status,
-        data: data
-      }));
+        message: typeof data === 'object' ? data.message : data
+      });
     }
 
-    // Send response
+    // Send success response
     res.json(data);
 
   } catch (error) {
     // Log error
-    console.error(`[Notion API] Error:`, error);
-
-    // Parse error
-    let errorData;
-    try {
-      errorData = JSON.parse(error.message);
-    } catch (e) {
-      errorData = {
-        status: 500,
-        data: { message: error.message }
-      };
-    }
+    console.error(`[Notion API] Error:`, {
+      message: error.message,
+      stack: error.stack
+    });
 
     // Send error response
-    res.status(errorData.status).json(errorData.data);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Failed to fetch from Notion API'
+    });
   }
 });
 
