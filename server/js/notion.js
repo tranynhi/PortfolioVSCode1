@@ -1,6 +1,14 @@
 const { Client } = require('@notionhq/client');
 const config = require('../config');
 
+if (!config.NOTION_API_KEY) {
+  throw new Error('NOTION_API_KEY is not set in environment variables');
+}
+
+if (!config.DATABASE_ID) {
+  throw new Error('NOTION_DATABASE_ID is not set in environment variables');
+}
+
 const notion = new Client({
   auth: config.NOTION_API_KEY,
 });
@@ -91,4 +99,4 @@ module.exports = {
   fetchNotionDatabase,
   fetchNotionPage,
   renderNotionContent
-}; 
+};

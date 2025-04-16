@@ -3,8 +3,16 @@
 const API_ENDPOINT = 'https://tranynhi.onrender.com/api/notion';
 
 // These values will be provided by the server through environment variables
-const DATABASE_ID = process.env.NOTION_DATABASE_ID;
-const NOTION_API_KEY = process.env.NOTION_API_KEY;
+const DATABASE_ID = process.env.NOTION_DATABASE_ID || '1d528e8b6f0c808ba49ce4ecceec8f07';
+
+// Validate configuration
+if (!API_ENDPOINT) {
+  throw new Error('API_ENDPOINT is not configured');
+}
+
+if (!DATABASE_ID) {
+  throw new Error('DATABASE_ID is not configured');
+}
 
 // Function to fetch a page from Notion
 async function fetchNotionPage(pageId) {
