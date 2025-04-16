@@ -27,8 +27,13 @@ app.get('/health', (req, res) => {
 // Serve static files with correct MIME types
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// Serve CSS files
-app.use('/css', express.static(path.join(__dirname, 'src/styles')));
+// Serve CSS files with proper MIME type
+app.use('/css', (req, res, next) => {
+  if (req.path.endsWith('.css')) {
+    res.type('text/css');
+  }
+  next();
+}, express.static(path.join(__dirname, 'src/styles')));
 
 // Serve JavaScript files with proper MIME type
 app.use('/js', (req, res, next) => {
@@ -61,17 +66,9 @@ app.use('/components', express.static(path.join(__dirname, 'src/components')));
 // Proxy endpoint for Notion API
 app.all('/api/notion/*', async (req, res) => {
   try {
-    let notionPath = req.path.replace('/api/notion', '');
-    // Fix blocks endpoint path
-    notionPath = notionPath.replace('/blocks/', '/blocks/');
-    const notionUrl = `https://api.notion.com/v1${notionPath}`;
+    const notionUrl = `https://api.notion.com/v1/${req.params[0]}`;
+    console.log('Proxying request to:', notionUrl); // Debug log
     
-    console.log('Proxying request to Notion:', {
-      url: notionUrl,
-      method: req.method,
-      body: req.body
-    });
-
     const response = await fetch(notionUrl, {
       method: req.method,
       headers: {
@@ -79,21 +76,14 @@ app.all('/api/notion/*', async (req, res) => {
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
-      ...(req.method !== 'GET' && { body: JSON.stringify(req.body) })
+      body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      console.error('Notion API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        url: notionUrl,
-        data
-      });
-      return res.status(response.status).json(data);
+      throw new Error(`Notion API responded with status: ${response.status}`);
     }
 
+    const data = await response.json();
     console.log('Notion API Success:', {
       url: notionUrl,
       status: response.status,
