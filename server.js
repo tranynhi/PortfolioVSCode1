@@ -33,7 +33,9 @@ app.use('/post', express.static(path.join(__dirname, 'post')));
 // Proxy endpoint for Notion API
 app.all('/api/notion/*', async (req, res) => {
   try {
-    const notionPath = req.path.replace('/api/notion', '');
+    let notionPath = req.path.replace('/api/notion', '');
+    // Fix blocks endpoint path
+    notionPath = notionPath.replace('/blocks/', '/blocks/');
     const notionUrl = `https://api.notion.com/v1${notionPath}`;
     
     console.log('Proxying request to Notion:', {
