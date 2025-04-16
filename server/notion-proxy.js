@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -14,10 +15,10 @@ app.use(cors({
 
 app.use(express.json());
 
-app.all("/api/notion/*", async (req, res) => {
+app.use('/api/notion', async (req, res) => {
   try {
-    const notionPath = req.params[0];
-    const notionUrl = `https://api.notion.com/v1/${notionPath}`;
+    const notionPath = req.path;
+    const notionUrl = `https://api.notion.com/v1${notionPath}`;
     
     const response = await axios({
       method: req.method,
@@ -28,9 +29,9 @@ app.all("/api/notion/*", async (req, res) => {
         "Notion-Version": "2022-06-28",
         "Content-Type": "application/json"
       }
-    );
-    console.log("✅ Proxy nhận được request từ FE:", req.body);
+    });
 
+    console.log("✅ Proxy nhận được request từ FE:", req.body);
     res.json(response.data);
   } catch (err) {
     console.error("Notion API error:", err.response?.data || err);
