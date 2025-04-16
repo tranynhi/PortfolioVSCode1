@@ -88,6 +88,11 @@ app.get('/post/post.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'post/post.html'));
 });
 
+// Serve index.html for all other routes (SPA support)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
