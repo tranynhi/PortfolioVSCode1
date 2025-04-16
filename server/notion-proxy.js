@@ -6,23 +6,27 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3001;
 app.use(cors({
-  origin: "http://127.0.0.1:64216", // ✅ Ghi rõ origin bạn dùng live-server
-  credentials: false
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Notion-Version'],
+  credentials: true
 }));
 
 app.use(express.json());
 
-app.post("/api/notion", async (req, res) => {
+app.all("/api/notion/*", async (req, res) => {
   try {
-    const response = await axios.post(
-      `https://api.notion.com/v1/databases/${process.env.NOTION_DATABASE_ID}/query`,
-      req.body,
-      {
-        headers: {
-          "Authorization": `Bearer ${process.env.NOTION_API_KEY}`,
-          "Notion-Version": "2022-06-28",
-          "Content-Type": "application/json"
-        }
+    const notionPath = req.params[0];
+    const notionUrl = `https://api.notion.com/v1/${notionPath}`;
+    
+    const response = await axios({
+      method: req.method,
+      url: notionUrl,
+      data: req.body,
+      headers: {
+        "Authorization": `Bearer ${process.env.NOTION_API_KEY}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json"
       }
     );
     console.log("✅ Proxy nhận được request từ FE:", req.body);

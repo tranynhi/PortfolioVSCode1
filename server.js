@@ -44,9 +44,9 @@ const setMimeType = (req, res, next) => {
 };
 
 // Serve static files
-app.use('/css', setMimeType, express.static(path.join(__dirname, 'dist/css')));
-app.use('/js', setMimeType, express.static(path.join(__dirname, 'dist/js')));
-app.use('/assets', setMimeType, express.static(path.join(__dirname, 'dist/assets')));
+app.use('/css', setMimeType, express.static(path.join(__dirname, 'public/css')));
+app.use('/js', setMimeType, express.static(path.join(__dirname, 'public/js')));
+app.use('/assets', setMimeType, express.static(path.join(__dirname, 'public/assets')));
 
 // Serve HTML pages
 app.use('/', express.static(path.join(__dirname, 'src/pages'), {
@@ -58,9 +58,6 @@ app.use('/', express.static(path.join(__dirname, 'src/pages'), {
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
-
-// Serve HTML pages
-app.use('/', express.static(path.join(__dirname, 'src/pages')));
 
 // Handle post page route
 app.get('/post/post.html', (req, res) => {
@@ -77,17 +74,14 @@ app.all('/api/notion/*', async (req, res) => {
     const notionPath = req.params[0];
     const notionUrl = `https://api.notion.com/v1/${notionPath}`;
 
-    // Log các biến liên quan
-    console.log('NOTION_API_KEY exists:', !!NOTION_API_KEY);
-    console.log('notionUrl:', notionUrl);
-    console.log('method:', req.method);
-    console.log('body:', req.body);
+    // Get API key from environment variable
+    const NOTION_API_KEY = process.env.NOTION_API_KEY;
 
-    // Log request
+    // Log request info
     console.log(`[Notion API] Request:`, {
       method: req.method,
       url: notionUrl,
-      body: req.body
+      hasApiKey: !!NOTION_API_KEY
     });
 
     // Check API key

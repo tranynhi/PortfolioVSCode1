@@ -1,8 +1,10 @@
 // Notion API configuration
 // Use the server domain for API endpoint
 const API_ENDPOINT = 'https://tranynhi.onrender.com/api/notion';
-const DATABASE_ID = '1d528e8b6f0c808ba49ce4ecceec8f07';
-const NOTION_API_KEY = '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';
+
+// These values will be provided by the server through environment variables
+const DATABASE_ID = process.env.NOTION_DATABASE_ID;
+const NOTION_API_KEY = process.env.NOTION_API_KEY;
 
 // Function to fetch a page from Notion
 async function fetchNotionPage(pageId) {
