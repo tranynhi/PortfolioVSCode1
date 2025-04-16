@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Detail | Tran Y Nhi</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/notion-content.css" />
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="nav-container">
+        <a href="../index.html" class="logo">
+          <span class="logo-text">Tran Y Nhi</span>
+        </a>
+        <nav class="nav-menu">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#case-studies">Case Studies</a>
+          <a href="../index.html#contact">Contact</a>
+        </nav>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="loading">Loading...</div>
+    <div id="error" style="display: none;">
+      <p>Error loading project. Please try again later.</p>
+    </div>
+
+    <article class="project-detail">
+      <div id="project-header"></div>
+      <div id="notion-content"></div>
+    </article>
+
+    <nav class="project-navigation">
+      <a href="#" id="prev-project" class="nav-item hidden">
+        <span class="nav-label">Previous</span>
+        <span id="prev-title" class="nav-title"></span>
+      </a>
+      <a href="#" id="next-project" class="nav-item hidden">
+        <span class="nav-label">Next</span>
+        <span id="next-title" class="nav-title"></span>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-left">
+      <img src="../assets/images/flower.svg" alt="logo" class="footer-logo" />
+      <h2 class="footer-title">
+        crafting experiences  
+        <br />
+        with purpose and care <br />
+        for the curious mind.
+      </h2>
+    </div>
+
+    <div class="footer-right">
+      <ul class="footer-links">
+        <li><a href="https://www.linkedin.com/in/nhi-tran-y/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://www.behance.net/nhi-tran-y" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        <li><a href="https://dribbble.com/nhi-tran-y" target="_blank" rel="noopener noreferrer">Dribbble</a></li>
+        <li><a href="mailto:tranynhi2015@gmail.com">Email me</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script type="module" src="js/pages/post.js"></script>
+</body>
+</html>

@@ -26,15 +26,15 @@ app.get('/health', (req, res) => {
 
 // Serve static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/css', express.static(path.join(__dirname, 'src/styles')));
 // Serve JavaScript files with correct MIME type
 app.use('/js', (req, res, next) => {
   if (req.path.endsWith('.js')) {
     res.type('application/javascript');
   }
   next();
-}, express.static(path.join(__dirname, 'js')));
-app.use('/post', express.static(path.join(__dirname, 'post')));
+}, express.static(path.join(__dirname, 'src/js')));
+app.use('/', express.static(path.join(__dirname, 'src/pages')));
 
 // Proxy endpoint for Notion API
 app.all('/api/notion/*', async (req, res) => {
