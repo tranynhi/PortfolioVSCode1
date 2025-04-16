@@ -30,11 +30,22 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // Serve CSS files
 app.use('/css', express.static(path.join(__dirname, 'src/styles')));
 
-// Serve JavaScript files
+// Serve JavaScript files with proper MIME type
 app.use('/js', (req, res, next) => {
-  res.type('application/javascript');
+  if (req.path.endsWith('.js')) {
+    res.type('application/javascript');
+  }
   next();
 }, express.static(path.join(__dirname, 'src/js')));
+
+// Serve JavaScript API files
+app.use('/js/api', express.static(path.join(__dirname, 'src/js/api')));
+
+// Serve JavaScript utils files
+app.use('/js/utils', express.static(path.join(__dirname, 'src/js/utils')));
+
+// Serve JavaScript pages files
+app.use('/js/pages', express.static(path.join(__dirname, 'src/js/pages')));
 
 // Serve HTML pages
 app.use('/', express.static(path.join(__dirname, 'src/pages')));
