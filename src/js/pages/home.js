@@ -1,4 +1,4 @@
-import { fetchNotionDatabase } from './notion.js';
+import { fetchNotionDatabase } from '../api/notion.js';
 
 async function loadProjects() {
   try {
