@@ -27,7 +27,13 @@ app.get('/health', (req, res) => {
 // Serve static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/js', express.static(path.join(__dirname, 'js'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 app.use('/post', express.static(path.join(__dirname, 'post')));
 
 // Proxy endpoint for Notion API
