@@ -19,6 +19,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Health check endpoint for UptimeRobot
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Serve static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/css', express.static(path.join(__dirname, 'css')));
