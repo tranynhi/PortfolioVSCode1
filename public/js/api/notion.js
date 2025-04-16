@@ -1,6 +1,6 @@
 // Notion API configuration
-// Use the server domain for API endpoint
-const API_ENDPOINT = 'https://tranynhi.onrender.com/api/notion';
+// Sử dụng endpoint API server, không dùng process.env ở phía client
+import { API_ENDPOINT } from '../../src/js/config.js'; // Đường dẫn import phù hợp với vị trí file public
 
 // These values will be provided by the server through environment variables
 const DATABASE_ID = process.env.NOTION_DATABASE_ID || '1d528e8b6f0c808ba49ce4ecceec8f07';
