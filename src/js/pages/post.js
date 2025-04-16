@@ -52,10 +52,11 @@ function renderCategories(categories) {
   ).join('');
 }
 
+import { API_ENDPOINT } from '../config.js';
 // Function to render blocks
 async function renderBlocks(pageId) {
   try {
-    const response = await fetch(`http://localhost:3000/api/notion/blocks/${pageId}/children`);
+    const response = await fetch(`${API_ENDPOINT}/blocks/${pageId}/children`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
