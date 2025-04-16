@@ -40,7 +40,7 @@ app.all('/api/notion/*', async (req, res) => {
     const response = await fetch(notionUrl, {
       method: req.method,
       headers: {
-        'Authorization': `Bearer secret_Ue8Ue6Ue8Ue6Ue8Ue6Ue8Ue6Ue8Ue6Ue8U`,
+        'Authorization': `Bearer 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`,
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
