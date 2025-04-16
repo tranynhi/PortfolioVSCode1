@@ -10,13 +10,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS and JSON middleware
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Notion-Version'],
-  credentials: true
-}));
+// Enable CORS
+app.use(cors());
+
+// Set security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
+
 app.use(express.json());
 
 // Health check endpoint for UptimeRobot
@@ -28,20 +30,22 @@ app.get('/health', (req, res) => {
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Serve CSS files with proper MIME type
-app.use('/css', (req, res, next) => {
-  if (req.path.endsWith('.css')) {
-    res.type('text/css');
+app.use('/css', express.static(path.join(__dirname, 'src/styles'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    }
   }
-  next();
-}, express.static(path.join(__dirname, 'src/styles')));
+}));
 
 // Serve JavaScript files with proper MIME type
-app.use('/js', (req, res, next) => {
-  if (req.path.endsWith('.js')) {
-    res.type('application/javascript');
+app.use('/js', express.static(path.join(__dirname, 'src/js'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
   }
-  next();
-}, express.static(path.join(__dirname, 'src/js')));
+}));
 
 // Serve JavaScript API files
 app.use('/js/api', express.static(path.join(__dirname, 'src/js/api')));
@@ -66,35 +70,42 @@ app.use('/components', express.static(path.join(__dirname, 'src/components')));
 // Proxy endpoint for Notion API
 app.all('/api/notion/*', async (req, res) => {
   try {
-    const notionUrl = `https://api.notion.com/v1/${req.params[0]}`;
-    console.log('Proxying request to:', notionUrl); // Debug log
-    
+    const notionPath = req.params[0];
+    console.log('Notion API request:', {
+      path: notionPath,
+      method: req.method
+    });
+
+    const notionUrl = `https://api.notion.com/v1/${notionPath}`;
     const response = await fetch(notionUrl, {
       method: req.method,
       headers: {
-        'Authorization': `Bearer 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`,
+        'Authorization': `Bearer ${NOTION_API_KEY}`,
         'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json'
       },
       body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Notion API responded with status: ${response.status}`);
+      console.error('Notion API Error:', {
+        status: response.status,
+        data
+      });
+      return res.status(response.status).json(data);
     }
 
-    const data = await response.json();
     console.log('Notion API Success:', {
-      url: notionUrl,
-      status: response.status,
-      hasData: !!data
+      path: notionPath,
+      status: response.status
     });
 
     res.json(data);
   } catch (error) {
-    console.error('Error proxying to Notion:', {
-      error: error.message,
-      stack: error.stack
+    console.error('Notion API Error:', error);
+    res.status(500).json({
     });
     res.status(500).json({ 
       error: 'Failed to fetch from Notion API',
