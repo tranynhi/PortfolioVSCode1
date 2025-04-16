@@ -1,5 +1,5 @@
 // Notion API configuration
-const API_ENDPOINT = 'http://localhost:3000/api/notion';
+const API_ENDPOINT = `${window.location.origin}/api/notion`;
 const DATABASE_ID = '1d528e8b6f0c808ba49ce4ecceec8f07';
 const NOTION_API_KEY = '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';
 
