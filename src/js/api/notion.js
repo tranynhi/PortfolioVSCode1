@@ -1,7 +1,7 @@
 // Notion API configuration
-// Use the server domain for API endpoint
+// Sử dụng endpoint API server, không dùng process.env ở phía client
 const API_ENDPOINT = 'https://tranynhi.onrender.com/api/notion';
-const DATABASE_ID = '1d528e8b6f0c808ba49ce4ecceec8f07';
+const DATABASE_ID = '1d528e8b6f0c808ba49ce4ecceec8f07'; // Nếu phía client cần sử dụng, giữ lại, nếu không thì xóa dòng này
 
 // Function to fetch a page from Notion
 async function fetchNotionPage(pageId) {
