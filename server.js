@@ -77,6 +77,12 @@ app.all('/api/notion/*', async (req, res) => {
     const notionPath = req.params[0];
     const notionUrl = `https://api.notion.com/v1/${notionPath}`;
 
+    // Log các biến liên quan
+    console.log('NOTION_API_KEY exists:', !!NOTION_API_KEY);
+    console.log('notionUrl:', notionUrl);
+    console.log('method:', req.method);
+    console.log('body:', req.body);
+
     // Log request
     console.log(`[Notion API] Request:`, {
       method: req.method,
@@ -119,7 +125,8 @@ app.all('/api/notion/*', async (req, res) => {
       return res.status(response.status).json({
         error: 'Notion API Error',
         status: response.status,
-        message: typeof data === 'object' ? data.message : data
+        message: typeof data === 'object' ? data.message : data,
+        notionRaw: data
       });
     }
 
@@ -127,16 +134,25 @@ app.all('/api/notion/*', async (req, res) => {
     res.json(data);
 
   } catch (error) {
-    // Log error
+    // Log error chi tiết
     console.error(`[Notion API] Error:`, {
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
+      error
     });
 
-    // Send error response
+    // Nếu có response từ Notion, trả về luôn response đó
+    if (error.response) {
+      const body = await error.response.text();
+      return res.status(error.response.status).send(body);
+    }
+
+    // Trả về lỗi chi tiết cho client
     res.status(500).json({
       error: 'Internal Server Error',
-      message: 'Failed to fetch from Notion API'
+      message: error.message,
+      stack: error.stack,
+      raw: error
     });
   }
 });
