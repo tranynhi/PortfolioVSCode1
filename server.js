@@ -50,6 +50,11 @@ app.use('/js/pages', express.static(path.join(__dirname, 'src/js/pages')));
 // Serve HTML pages
 app.use('/', express.static(path.join(__dirname, 'src/pages')));
 
+// Handle post page route
+app.get('/post/post.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/pages/post.html'));
+});
+
 // Serve component files
 app.use('/components', express.static(path.join(__dirname, 'src/components')));
 
