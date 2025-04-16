@@ -1,5 +1,5 @@
-const API_ENDPOINT = 'https://portfolio-vs-code.vercel.app/api/notion';
-const DATABASE_ID = 'YOUR_DATABASE_ID';
+const API_ENDPOINT = 'https://tranynhi.onrender.com/api/notion';
+const DATABASE_ID = '1d528e8b6f0c808ba49ce4ecceec8f07';
 
 async function fetchNotionPosts() {
   try {
