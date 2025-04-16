@@ -10,47 +10,50 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configure express
+// Basic middleware
 app.use(express.json());
 
-// Enable CORS with specific options
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+// Enable CORS
+app.use(cors());
+
+// Set strict MIME types
+const mimeTypes = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml'
+};
+
+// Serve static files from dist
+app.use(express.static(path.join(__dirname, 'dist'), {
+  setHeaders: (res, filePath) => {
+    // Set nosniff header
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+
+    // Set correct MIME type
+    const ext = path.extname(filePath).toLowerCase();
+    const mimeType = mimeTypes[ext];
+    if (mimeType) {
+      res.setHeader('Content-Type', mimeType);
+    }
+  }
 }));
 
-// Set security and MIME type headers
-app.use((req, res, next) => {
-  // Security headers
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  
-  // Set MIME types based on file extension
-  if (req.path.endsWith('.css')) {
-    res.type('text/css');
-  } else if (req.path.endsWith('.js')) {
-    res.type('application/javascript');
+// Serve HTML pages
+app.use(express.static(path.join(__dirname, 'src/pages'), {
+  setHeaders: (res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
   }
-  
-  next();
-});
+}));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
-
-// Serve static files with proper MIME types
-app.use(express.static(path.join(__dirname, 'public'), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-    } else if (path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-    }
-  }
-}));
 
 // Serve HTML pages
 app.use('/', express.static(path.join(__dirname, 'src/pages')));
@@ -63,58 +66,70 @@ app.get('/post/post.html', (req, res) => {
 // Serve component files
 app.use('/components', express.static(path.join(__dirname, 'src/components')));
 
-// Proxy endpoint for Notion API
+// Notion API proxy
 app.all('/api/notion/*', async (req, res) => {
   try {
+    // Get Notion API path
     const notionPath = req.params[0];
     const notionUrl = `https://api.notion.com/v1/${notionPath}`;
 
-    // Log request details
-    console.log(`Proxying ${req.method} request to: ${notionUrl}`);
+    // Log request
+    console.log(`[Notion API] ${req.method} ${notionUrl}`);
 
-    // Prepare headers
-    const headers = {
-      'Authorization': `Bearer ${NOTION_API_KEY}`,
-      'Notion-Version': '2022-06-28',
-      'Content-Type': 'application/json'
-    };
-
-    // Make request to Notion API
+    // Make request
     const response = await fetch(notionUrl, {
       method: req.method,
-      headers: headers,
-      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
+      headers: {
+        'Authorization': `Bearer ${NOTION_API_KEY}`,
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json'
+      },
+      body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
     });
 
-    // Get response data
-    const contentType = response.headers.get('content-type');
-    const data = contentType?.includes('application/json') ? await response.json() : await response.text();
-
-    // Log response details
-    console.log(`Notion API ${response.ok ? 'Success' : 'Error'}:`, {
-      status: response.status,
-      contentType,
-      isJson: contentType?.includes('application/json')
-    });
-
-    // Forward response
-    res.status(response.status);
-    if (contentType) {
-      res.set('Content-Type', contentType);
+    // Parse response
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      data = await response.text();
     }
-    res.send(data);
+
+    // Log response
+    console.log(`[Notion API] Response:`, {
+      status: response.status,
+      ok: response.ok,
+      type: typeof data
+    });
+
+    // Handle error
+    if (!response.ok) {
+      throw new Error(JSON.stringify({
+        status: response.status,
+        data: data
+      }));
+    }
+
+    // Send response
+    res.json(data);
 
   } catch (error) {
-    // Log and handle errors
-    console.error('Notion API Error:', {
-      message: error.message,
-      stack: error.stack
-    });
+    // Log error
+    console.error(`[Notion API] Error:`, error);
 
-    res.status(500).json({
-      error: 'Failed to fetch from Notion API',
-      message: error.message
-    });
+    // Parse error
+    let errorData;
+    try {
+      errorData = JSON.parse(error.message);
+    } catch (e) {
+      errorData = {
+        status: 500,
+        data: { message: error.message }
+      };
+    }
+
+    // Send error response
+    res.status(errorData.status).json(errorData.data);
   }
 });
 
