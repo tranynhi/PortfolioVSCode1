@@ -26,35 +26,8 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Serve static files with correct MIME types
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-// Serve CSS files with proper MIME type
-app.use('/css', express.static(path.join(__dirname, 'src/styles'), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-    }
-  }
-}));
-
-// Serve JavaScript files with proper MIME type
-app.use('/js', express.static(path.join(__dirname, 'src/js'), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-    }
-  }
-}));
-
-// Serve JavaScript API files
-app.use('/js/api', express.static(path.join(__dirname, 'src/js/api')));
-
-// Serve JavaScript utils files
-app.use('/js/utils', express.static(path.join(__dirname, 'src/js/utils')));
-
-// Serve JavaScript pages files
-app.use('/js/pages', express.static(path.join(__dirname, 'src/js/pages')));
+// Serve all static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve HTML pages
 app.use('/', express.static(path.join(__dirname, 'src/pages')));
